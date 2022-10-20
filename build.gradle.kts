@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
+typealias Shadowjar = com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 val kotlin_version = "1.7.0"
 buildscript {
@@ -14,77 +15,53 @@ plugins {
     kotlin("jvm") version "1.7.0"
     id("org.jetbrains.dokka") version "1.4.32"
     id("maven-publish")
-    application
 }
-apply(plugin = "kotlin")
-apply(plugin = "com.github.johnrengelman.shadow")
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    archiveFileName.set("${rootProject.name}.jar")
-}
-
-val projectMainClass = "AppKt"
-tasks.withType<Jar> {
-    manifest {
-        attributes(mapOf(
-            "Main-Class" to projectMainClass
-        ))
-    }
-}
-
-application {
-    mainClass.set(projectMainClass)
-}
-
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    api(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    api("org.jetbrains.kotlin:kotlin-stdlib:${kotlin_version}")
-    api("org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}")
-    api("org.jetbrains.kotlin:kotlin-test:${kotlin_version}")
-}
-
-lateinit var sourcesArtifact: PublishArtifact
-lateinit var javadocArtifact: PublishArtifact
-
-typealias Shadowjar = com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
-tasks {
-    val sourcesJar by creating(Shadowjar::class) {
-        archiveClassifier.set("sources")
-        from(kotlin.sourceSets["main"].kotlin.srcDirs)
-    }
-    val dokkaHtml by getting(org.jetbrains.dokka.gradle.DokkaTask::class)
-    val javadocJar by creating(Shadowjar::class) {
-        dependsOn(dokkaHtml)
-        archiveClassifier.set("javadoc")
-        from(dokkaHtml.outputDirectory)
-    }
-    artifacts {
-        sourcesArtifact = archives(sourcesJar)
-        javadocArtifact = archives(javadocJar)
-    }
-}
-
 allprojects {
-    apply(plugin = "maven-publish")
+    apply(plugin = "kotlin")
+    apply(plugin = "com.github.johnrengelman.shadow")
+    tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
+        archiveFileName.set("${rootProject.name}.jar")
+    }
 
+    repositories {
+        mavenCentral()
+        maven { url = uri("https://repo.dmulloy2.net/repository/public/") }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
+        maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+        maven { url = uri("https://hub.spigotmc.org/nexus/content/repositories/public/") }
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://libraries.minecraft.net/") }
+        maven { url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/") }
+
+    }
+
+    dependencies {
+//    api(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+        compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+
+    }
+
+    lateinit var sourcesArtifact: PublishArtifact
+
+
+    tasks {
+        artifacts {
+            sourcesArtifact = archives(jar)
+        }
+    }
+
+    apply(plugin = "maven-publish")
 
     publishing {
         val repo = System.getenv("GITHUB_REPOSITORY")
         if (repo === null) return@publishing
         repositories {
             maven {
-                name = "GitHubPackages"
-
-                url = uri("https://maven.pkg.github.com/$repo")
+                url = uri("https://s01.oss.sonatype.org/content/repositories/releases/")
                 credentials {
 
-                    username = System.getenv("GITHUB_ACTOR") as? String
-                    password = System.getenv("GITHUB_TOKEN") as? String
+                    username = System.getenv("SONATYPE_USERNAME") as? String
+                    password = System.getenv("SONATYPE_PASSWORD") as? String
                 }
             }
         }
@@ -95,7 +72,6 @@ allprojects {
                 artifactId = project.name.toLowerCase()
                 version = System.getenv("GITHUB_BUILD_NUMBER")?: project.version.toString()
                 artifact(sourcesArtifact)
-                artifact(javadocArtifact)
             }
         }
 

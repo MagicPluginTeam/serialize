@@ -6,7 +6,7 @@ plugins {
 lateinit var sourcesArtifact: PublishArtifact
 
 dependencies {
-    allprojects.forEach { api(it) }
+    allprojects.forEach { if (it != this) api(it) }
 }
 
 tasks {

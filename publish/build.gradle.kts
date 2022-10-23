@@ -6,7 +6,7 @@ plugins {
 lateinit var sourcesArtifact: PublishArtifact
 
 dependencies {
-    allprojects.forEach { if (it != this) api(it) }
+    allprojects.forEach { if (it != project) api(it) }
 }
 
 tasks {
@@ -31,7 +31,7 @@ publishing {
         register<MavenPublication>(project.name) {
             val githubUserName = repo.substring(0, repo.indexOf("/"))
             groupId = "io.github.${githubUserName.toLowerCase()}"
-            artifactId = project.name.toLowerCase()
+            artifactId = rootProject.name.toLowerCase()
             version = System.getenv("GITHUB_BUILD_NUMBER")?: project.version.toString()
             artifact(sourcesArtifact)
         }

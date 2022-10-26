@@ -10,11 +10,11 @@ import org.bukkit.inventory.Inventory;
 public class SerializableInventory implements YamlSerialize<Inventory> {
     @Override
     public Inventory deserialize(ConfigurationSection conf) {
-        throw new NotImplementedException();
+        throw new AssertionError("Not Implemented");
     }
 
     @Override
     public ConfigurationSection serialize(Inventory inventory) {
-        throw new NotImplementedException();
+        throw new AssertionError("Not Implemented");
     }
 }

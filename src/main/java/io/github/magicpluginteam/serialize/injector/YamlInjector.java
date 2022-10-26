@@ -2,7 +2,7 @@ package io.github.magicpluginteam.serialize.injector;
 
 import io.github.magicpluginteam.serialize.YamlSection;
 import io.github.magicpluginteam.serialize.symbol.YamlSymbol;
-import io.github.magicpluginteam.serialize.tree.YamlTreeUtils;
+import io.github.magicpluginteam.serialize.utils.YamlTreeUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

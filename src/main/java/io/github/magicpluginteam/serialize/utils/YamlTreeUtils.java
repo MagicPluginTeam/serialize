@@ -1,4 +1,4 @@
-package io.github.magicpluginteam.serialize.tree;
+package io.github.magicpluginteam.serialize.utils;
 
 import io.github.magicpluginteam.serialize.YamlSection;
 import io.github.magicpluginteam.serialize.YamlSerialize;

@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
 
 public @interface YamlField {
 
-    Class<? extends YamlSerialize<?>> serializable();
+    Class<? extends YamlSerialize<?>> value();
 
 }

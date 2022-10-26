@@ -24,7 +24,7 @@ public class YamlFieldInjector {
                     section = new YamlConfiguration();
                     section.set("_", conf.get(name));
                 }
-                var serialize = annotation.serializable().newInstance();
+                var serialize = annotation.value().newInstance();
                 field.setAccessible(true);
                 field.set(obj, serialize.deserialize(section));
             } catch (IllegalAccessException | InstantiationException e) {

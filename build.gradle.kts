@@ -32,12 +32,15 @@ allprojects {
         maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://libraries.minecraft.net/") }
         maven { url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/") }
+        maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 
     }
 
     dependencies {
 //    api(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
         compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+        testImplementation("com.github.seeseemelk:MockBukkit-v1.19:2.126.0")
+        testImplementation("junit:junit:4.13.2")
 
     }
 
@@ -74,6 +77,11 @@ allprojects {
                 artifact(sourcesArtifact)
             }
         }
+
+    }
+
+    tasks.test {
+        useJUnit()
 
     }
 

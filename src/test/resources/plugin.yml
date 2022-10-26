@@ -1,0 +1,3 @@
+name: Test
+main: test.MyPlugin
+version: test version

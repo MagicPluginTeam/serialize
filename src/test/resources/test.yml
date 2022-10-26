@@ -1,0 +1,30 @@
+SerializableItemStack:
+  item:
+    type: BREAD
+    name: "Bruce"
+SerializableInventory:
+  inventory:
+    type: PLAYER
+
+SerializablePrimitive:
+  valueInt: 1010
+  valueBoolean: true
+  valueDouble: 2.0
+  valueString: "Hello"
+  valueList:
+    - Hello
+    - This
+    - Is
+    - Bruce
+SerializableString:
+  string: Hello
+SerializableList:
+  list:
+    - hell
+    - o
+    - haha
+    - hoho
+SerializableBoolean:
+  bool: true
+SerializableInteger:
+  integer: 1
